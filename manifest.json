@@ -1,0 +1,23 @@
+{
+
+  "description": "Adds a solid red border to all webpages matching mozilla.org. See https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Examples#borderify",
+  "manifest_version": 2,
+  "name": "Imgur Troll Checker",
+  "version": "1.0",
+  "homepage_url": "https://github.com/mdn/webextensions-examples/tree/master/borderify",
+  "icons": {
+    "512": "icons/troll-512.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.imgur.com/*"],
+      "js": ["troll_check.js"],
+      "css": ["popup.css"]
+    }
+  ],
+
+  "permissions": [
+    "*://api.imgur.com/*"
+  ]
+}
