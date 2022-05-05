@@ -28,14 +28,6 @@ function time_span_to_time_string (time_ms) {
     return `${time}${time_scale}`;
 }
 
-function removePopupContainers() {
-    popupContainers = document.querySelectorAll('#myPopupContainer');
-
-    popupContainers.forEach(popupContainer => {
-        popupContainer.remove();
-    })
-}
-
 function mouseEnterHandler(event) {
     byLine = event.target;
 
