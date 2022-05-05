@@ -39,46 +39,46 @@ function removePopupContainers() {
 function mouseEnterHandler(event) {
     byLine = event.target;
 
-    pfp = byLine.querySelector('.GalleryComment-avatar-bar');
-    author_name = byLine.querySelector('.author-name').innerHTML;
+    popupText = byLine.querySelector('.popuptext');
 
-    removePopupContainers(byLine);
+    if ("" == popupText.innerHTML) {
+        author_name = byLine.querySelector('.author-name').innerHTML;
+        user_url = `https://api.imgur.com/account/v1/accounts/${author_name}?client_id=546c25a59c58ad7`;
+        fetch(user_url)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            username = data.username;
+            created_at = Date.parse(data.created_at);
+            reputation_count = Math.floor(data.reputation_count);
 
-    user_url = `https://api.imgur.com/account/v1/accounts/${author_name}?client_id=546c25a59c58ad7`;
-    console.debug(user_url);
-
-    fetch(user_url)
-    .then(function (response) {
-        return response.json();
-    })
-    .then(function (data) {
-        username = data.username;
-        created_at = Date.parse(data.created_at);
-        reputation_count = Math.floor(data.reputation_count);
-
-        time_string = time_span_to_time_string(Date.now() - created_at);
-
-        pfp.insertAdjacentHTML("beforeBegin",`
-        <div class="popup" id="myPopupContainer">
-        <span class="popuptext" id="myPopup">${time_string} | ${reputation_count}</span>
-        </div>
-        `);
-        // popup = byLine.querySelector('#myPopup');
-        // popup.classList.toggle("show");
-    })
-    .catch(function (err) {
-        console.error(err);
-    });
-
+            time_string = time_span_to_time_string(Date.now() - created_at);
+            popupText.innerHTML = `${time_string} | ${reputation_count}`
+        })
+        .catch(function (err) {
+            console.error(err);
+        });
+    }
+    popupText.classList.toggle("show");
 }
 
 function mouseLeaveHandler(event) {
     byLine = event.target;
-    removePopupContainers(byLine);
+    popupText = byLine.querySelector('.popuptext');
+    popupText.classList.toggle("show");
 }
 
 function decorateComment(comment) {
     byLine = comment.querySelector('.GalleryComment-byLine');
+
+    pfp = byLine.querySelector('.GalleryComment-avatar-bar');
+
+    pfp.insertAdjacentHTML("beforeBegin",`
+    <div class="popup">
+    <span class="popuptext"></span>
+    </div>
+    `);
 
     byLine.addEventListener('mouseenter', mouseEnterHandler);
     byLine.addEventListener('mouseleave', mouseLeaveHandler);
