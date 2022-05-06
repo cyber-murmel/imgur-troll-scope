@@ -33,7 +33,7 @@ function mouseEnterHandler(event) {
 
     popupText = byLine.querySelector('.popuptext');
 
-    if ("" == popupText.innerHTML) {
+    if ("" == popupText.innerText) {
         author_name = byLine.querySelector('.author-name').innerHTML;
         user_url = `https://api.imgur.com/account/v1/accounts/${author_name}?client_id=546c25a59c58ad7`;
         fetch(user_url)
@@ -46,7 +46,7 @@ function mouseEnterHandler(event) {
             reputation_count = Math.floor(data.reputation_count);
 
             time_string = time_span_to_time_string(Date.now() - created_at);
-            popupText.innerHTML = `${time_string} | ${reputation_count}`
+            popupText.innerText = `${time_string} | ${reputation_count}`
         })
         .catch(function (err) {
             console.error(err);
